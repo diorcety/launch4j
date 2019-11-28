@@ -144,13 +144,18 @@ JNIEnv* createVm()
 	int				iRetVal;
 	CreateJavaVM_t	*pfnCreateJavaVM;
 	char			rgcLibPth[_MAX_PATH + 18];
-	// sprintf(rgcLibPth, "%s\\bin\\client\\jvm.dll", g_rgcCurrJrePth); // TODO - could be client or server
 	sprintf(rgcLibPth, "%s\\bin\\client\\jvm.dll", g_rgcCurrJrePth);
 	
 	/* Get a handle to the jvm dll */
 	if ((g_hInstance = LoadLibrary(rgcLibPth)) == NULL)
 	{
-		return NULL;
+		sprintf(rgcLibPth, "%s\\bin\\server\\jvm.dll", g_rgcCurrJrePth);
+		
+		/* Get a handle to the jvm dll */
+		if ((g_hInstance = LoadLibrary(rgcLibPth)) == NULL)
+		{
+			return NULL;
+		}
 	}
 
 	/* Get the CreateJavaVM() function */
