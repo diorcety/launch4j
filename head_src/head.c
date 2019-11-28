@@ -429,9 +429,9 @@ void formatJavaVersion(char* version, const char* originalVersion)
 void regSearch(const char* keyName, const int searchType)
 {
 	HKEY hKey;
-	const DWORD wow64KeyMask = searchType & KEY_WOW64_64KEY;
+	const DWORD wow64KeyMask = searchType & (KEY_WOW64_64KEY | KEY_WOW64_32KEY);
 
-	debug("%s-bit search:\t%s...\n", wow64KeyMask ? "64" : "32", keyName);
+	debug("%s-bit search:\t%s...\n", (wow64KeyMask & KEY_WOW64_64KEY) ? "64" : "32", keyName);
 
 	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,
 			keyName,
@@ -560,43 +560,29 @@ void regSearchWow(const char* keyName, const int searchType)
 	switch (search.runtimeBits)
 	{
 		case USE_64_BIT_RUNTIME:
-			if (wow64)
-			{
-				regSearch(keyName, searchType | KEY_WOW64_64KEY);
-			}
+			regSearch(keyName, searchType | KEY_WOW64_64KEY);
 			break;
 
 		case USE_64_AND_32_BIT_RUNTIME:
-			if (wow64)
-			{
-				regSearch(keyName, searchType | KEY_WOW64_64KEY);
-				
-				if ((search.foundJava & KEY_WOW64_64KEY) != NO_JAVA_FOUND)
-				{
-					break;
-				}
-			}
-
-			regSearch(keyName, searchType);
-			break;
-
-		case USE_32_AND_64_BIT_RUNTIME:
-			regSearch(keyName, searchType);
-
-			if (search.foundJava != NO_JAVA_FOUND
-				&& (search.foundJava & KEY_WOW64_64KEY) == NO_JAVA_FOUND)
+			regSearch(keyName, searchType | KEY_WOW64_64KEY);
+			if ((search.foundJava & KEY_WOW64_64KEY) != NO_JAVA_FOUND)
 			{
 				break;
 			}
+			regSearch(keyName, searchType | KEY_WOW64_32KEY);
+			break;
 
-			if (wow64)
+		case USE_32_AND_64_BIT_RUNTIME:
+			regSearch(keyName, searchType | KEY_WOW64_32KEY);
+			if ((search.foundJava & KEY_WOW64_32KEY) != NO_JAVA_FOUND)
 			{
-				regSearch(keyName, searchType | KEY_WOW64_64KEY);
+				break;
 			}
+			regSearch(keyName, searchType | KEY_WOW64_64KEY);
 			break;
 
 		case USE_32_BIT_RUNTIME:
-			regSearch(keyName, searchType);
+			regSearch(keyName, searchType | KEY_WOW64_32KEY);
 			break;
 			
 		default:

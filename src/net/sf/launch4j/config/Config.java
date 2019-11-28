@@ -167,10 +167,10 @@ public class Config implements IValidatable {
 			Validator.checkIn(getPriority(), new String[] { "normal" }, "priority",
 					"Process priority is not supported,");
 			Validator.checkNotNull(classPath, "classpath", "classpath");
-			Validator.checkFalse(jre.getBundledJre64Bit(), "jre.bundledJre64Bit",
-					"64-bit bundled JRE not supported.");
-			Validator.checkTrue(Jre.RUNTIME_BITS_32.equals(jre.getRuntimeBits()), "jre.runtimeBits", 
-					"64-bit JRE not supported.");
+			Validator.checkFalse(jre.getBundledJreAsFallback(), "jre.bundledJre32Bit",
+					"32-bit bundled JRE not supported.");
+			Validator.checkTrue(Jre.RUNTIME_BITS_64.equals(jre.getRuntimeBits()), "jre.runtimeBits", 
+					"32-bit JRE not supported.");
 		}
 	}
 	

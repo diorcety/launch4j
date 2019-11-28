@@ -67,7 +67,9 @@ public class LdDefaults {
 
 	private static final List<String> LIBS = Arrays.asList(new String[] {
 			"w32api/libmingw32.a",
+			"w32api/libmingwex.a",
 			"w32api/libgcc.a",
+			"w32api/libmsvcrt.a",
 			"w32api/libmsvcrt.a",
 			"w32api/libkernel32.a",
 			"w32api/libuser32.a",
@@ -78,6 +80,7 @@ public class LdDefaults {
 			"w32api_jni/libmingw32.a",
 			"w32api_jni/libmingwex.a",
 			"w32api_jni/libgcc.a",
+			"w32api_jni/libmsvcrt.a",
 			"w32api_jni/libmsvcrt.a",
 			"w32api_jni/libmoldname.a",
 			"w32api_jni/libkernel32.a",
