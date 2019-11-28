@@ -43,7 +43,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<versionNumber>${launch4j.version}.0.0</versionNumber>
+		<versionNumber>${launch4j.versionNumber}</versionNumber>
 		<version>${launch4j.version}</version>
 	</properties>
 

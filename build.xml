@@ -70,6 +70,7 @@
 		</copy>
 		<replace file="./pom.xml">
 			<replacefilter token="$${launch4j.version}" value="${version}"/>
+			<replacefilter token="$${launch4j.versionNumber}" value="${versionNumber}"/>
 		</replace>
 		<delete dir="${lib}" />
 		<mkdir dir="./target" />
