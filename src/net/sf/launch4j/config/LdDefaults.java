@@ -51,13 +51,13 @@ public class LdDefaults {
 			"head/consolehead.o",
 			"head/head.o" });
 	
-	private static final List<String> JNI_GUI_32_OBJECTS = Arrays.asList(new String[] {
+	private static final List<String> JNI_GUI_OBJECTS = Arrays.asList(new String[] {
 			"w32api_jni/crt2.o",
 			"head_jni_BETA/jniguihead.o",
 			"head_jni_BETA/head.o",
 			"head_jni_BETA/jnihead.o" });
 
-	private static final List<String> JNI_CONSOLE_32_OBJECTS = Arrays.asList(new String[] {
+	private static final List<String> JNI_CONSOLE_OBJECTS = Arrays.asList(new String[] {
 			"w32api_jni/crt2.o",
 			"head_jni_BETA/jniconsolehead.o",
 			"head_jni_BETA/head.o",
@@ -89,8 +89,8 @@ public class LdDefaults {
 		HEADER_OBJECTS = new ArrayList<List<String>>();
 		HEADER_OBJECTS.add(GUI_OBJECTS);
 		HEADER_OBJECTS.add(CONSOLE_OBJECTS);
-		HEADER_OBJECTS.add(JNI_GUI_32_OBJECTS);
-		HEADER_OBJECTS.add(JNI_CONSOLE_32_OBJECTS);
+		HEADER_OBJECTS.add(JNI_GUI_OBJECTS);
+		HEADER_OBJECTS.add(JNI_CONSOLE_OBJECTS);
 	}
 
 	public static List<String> getHeaderObjects(int headerTypeIndex) {
@@ -106,9 +106,8 @@ public class LdDefaults {
 				|| Config.CONSOLE_HEADER.equals(headerType)) {
 			return LIBS;
 		}
-
-		if (Config.JNI_GUI_HEADER_32.equals(headerType)
-				|| Config.JNI_CONSOLE_HEADER_32.equals(headerType)) {
+		if (Config.JNI_GUI_HEADER.equals(headerType)
+				|| Config.JNI_CONSOLE_HEADER.equals(headerType)) {
 			return JNI_LIBS;
 		}
 		

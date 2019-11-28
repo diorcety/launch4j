@@ -63,13 +63,13 @@ public class Config implements IValidatable {
 
 	public static final String GUI_HEADER = "gui";
 	public static final String CONSOLE_HEADER = "console";
-	public static final String JNI_GUI_HEADER_32 = "jniGui32";
-	public static final String JNI_CONSOLE_HEADER_32 = "jniConsole32";
+	public static final String JNI_GUI_HEADER = "jniGui";
+	public static final String JNI_CONSOLE_HEADER = "jniConsole";
 
 	private static final String[] HEADER_TYPES = new String[] { GUI_HEADER,
 																CONSOLE_HEADER,
-																JNI_GUI_HEADER_32,
-																JNI_CONSOLE_HEADER_32 };
+																JNI_GUI_HEADER,
+																JNI_CONSOLE_HEADER };
 
 	private static final String[] PRIORITY_CLASS_NAMES = new String[] { "normal",
 																		"idle",
@@ -215,12 +215,12 @@ public class Config implements IValidatable {
 	}
 	
 	public boolean isGuiApplication() {
-		return GUI_HEADER.equals(headerType) || JNI_GUI_HEADER_32.equals(headerType);
+		return GUI_HEADER.equals(headerType) || JNI_GUI_HEADER.equals(headerType);
 	}
 	
 	public boolean isJniApplication() {
-		return JNI_GUI_HEADER_32.equals(headerType)
-				|| JNI_CONSOLE_HEADER_32.equals(headerType);
+		return JNI_GUI_HEADER.equals(headerType)
+				|| JNI_CONSOLE_HEADER.equals(headerType);
 	}
 
 	/** launch4j header file. */
