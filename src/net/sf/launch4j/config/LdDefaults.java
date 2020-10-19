@@ -36,48 +36,86 @@
  */
 package net.sf.launch4j.config;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LdDefaults {
-	private static final List<String> GUI_OBJECTS = Arrays.asList(new String[] {
+	private static final List<String> GUI_OBJECTS_32 = Arrays.asList(new String[] {
 			"w32api/crt2.o",
-			"head/guihead.o",
-			"head/head.o" });
+			"head32/guihead.o",
+			"head32/head.o" });
 
-	private static final List<String> CONSOLE_OBJECTS = Arrays.asList(new String[] {
+	private static final List<String> GUI_OBJECTS_64 = Arrays.asList(new String[] {
+			"w64api/crt2.o",
+			"head64/guihead.o",
+			"head64/head.o" });
+
+	private static final List<String> CONSOLE_OBJECTS_32 = Arrays.asList(new String[] {
 			"w32api/crt2.o",
-			"head/consolehead.o",
-			"head/head.o" });
+			"head32/consolehead.o",
+			"head32/head.o" });
+
+	private static final List<String> CONSOLE_OBJECTS_64 = Arrays.asList(new String[] {
+			"w64api/crt2.o",
+			"head64/consolehead.o",
+			"head64/head.o" });
 	
-	private static final List<String> JNI_GUI_OBJECTS = Arrays.asList(new String[] {
+	private static final List<String> JNI_GUI_OBJECTS_32 = Arrays.asList(new String[] {
 			"w32api_jni/crt2.o",
-			"head_jni_BETA/jniguihead.o",
-			"head_jni_BETA/head.o",
-			"head_jni_BETA/jnihead.o" });
+			"head32_jni_BETA/jniguihead.o",
+			"head32_jni_BETA/head.o",
+			"head32_jni_BETA/jnihead.o" });
 
-	private static final List<String> JNI_CONSOLE_OBJECTS = Arrays.asList(new String[] {
+	private static final List<String> JNI_GUI_OBJECTS_64 = Arrays.asList(new String[] {
+			"w64api_jni/crt2.o",
+			"head64_jni_BETA/jniguihead.o",
+			"head64_jni_BETA/head.o",
+			"head64_jni_BETA/jnihead.o" });
+
+	private static final List<String> JNI_CONSOLE_OBJECTS_32 = Arrays.asList(new String[] {
 			"w32api_jni/crt2.o",
-			"head_jni_BETA/jniconsolehead.o",
-			"head_jni_BETA/head.o",
-			"head_jni_BETA/jnihead.o" });
+			"head32_jni_BETA/jniconsolehead.o",
+			"head32_jni_BETA/head.o",
+			"head32_jni_BETA/jnihead.o" });
 
-	private static final List<List<String>> HEADER_OBJECTS;
+	private static final List<String> JNI_CONSOLE_OBJECTS_64 = Arrays.asList(new String[] {
+			"w64api_jni/crt2.o",
+			"head64_jni_BETA/jniconsolehead.o",
+			"head64_jni_BETA/head.o",
+			"head64_jni_BETA/jnihead.o" });
 
-	private static final List<String> LIBS = Arrays.asList(new String[] {
+	private static final Map<String, List<String>> HEADER_OBJECTS_32;
+	private static final Map<String, List<String>> HEADER_OBJECTS_64;
+
+	private static final List<String> LIBS_32 = Arrays.asList(new String[] {
 			"w32api/libmingw32.a",
+			"w32api/libmingwex.a",
 			"w32api/libgcc.a",
+			"w32api/libmsvcrt.a",
 			"w32api/libmsvcrt.a",
 			"w32api/libkernel32.a",
 			"w32api/libuser32.a",
 			"w32api/libadvapi32.a",
 			"w32api/libshell32.a" });
 
-	private static final List<String> JNI_LIBS = Arrays.asList(new String[] {
+	private static final List<String> LIBS_64 = Arrays.asList(new String[] {
+			"w64api/libmingw32.a",
+			"w64api/libmingwex.a",
+			"w64api/libgcc.a",
+			"w64api/libmsvcrt.a",
+			"w64api/libmsvcrt.a",
+			"w64api/libkernel32.a",
+			"w64api/libuser32.a",
+			"w64api/libadvapi32.a",
+			"w64api/libshell32.a" });
+
+	private static final List<String> JNI_LIBS_32 = Arrays.asList(new String[] {
 			"w32api_jni/libmingw32.a",
 			"w32api_jni/libmingwex.a",
 			"w32api_jni/libgcc.a",
+			"w32api_jni/libmsvcrt.a",
 			"w32api_jni/libmsvcrt.a",
 			"w32api_jni/libmoldname.a",
 			"w32api_jni/libkernel32.a",
@@ -85,32 +123,67 @@ public class LdDefaults {
 			"w32api_jni/libadvapi32.a",
 			"w32api_jni/libshell32.a" });
 
+	private static final List<String> JNI_LIBS_64 = Arrays.asList(new String[] {
+			"w64api_jni/libmingw32.a",
+			"w64api_jni/libmingwex.a",
+			"w64api_jni/libgcc.a",
+			"w64api_jni/libmsvcrt.a",
+			"w64api_jni/libmsvcrt.a",
+			"w64api_jni/libmoldname.a",
+			"w64api_jni/libkernel32.a",
+			"w64api_jni/libuser32.a",
+			"w64api_jni/libadvapi32.a",
+			"w64api_jni/libshell32.a" });
+
+
 	static {
-		HEADER_OBJECTS = new ArrayList<List<String>>();
-		HEADER_OBJECTS.add(GUI_OBJECTS);
-		HEADER_OBJECTS.add(CONSOLE_OBJECTS);
-		HEADER_OBJECTS.add(JNI_GUI_OBJECTS);
-		HEADER_OBJECTS.add(JNI_CONSOLE_OBJECTS);
+		HEADER_OBJECTS_32 = new HashMap<String, List<String>>();
+		HEADER_OBJECTS_32.put(Config.GUI_HEADER, GUI_OBJECTS_32);
+		HEADER_OBJECTS_32.put(Config.CONSOLE_HEADER, CONSOLE_OBJECTS_32);
+		HEADER_OBJECTS_32.put(Config.JNI_GUI_HEADER, JNI_GUI_OBJECTS_32);
+		HEADER_OBJECTS_32.put(Config.JNI_CONSOLE_HEADER, JNI_CONSOLE_OBJECTS_32);
+
+		HEADER_OBJECTS_64 = new HashMap<String, List<String>>();
+		HEADER_OBJECTS_64.put(Config.GUI_HEADER, GUI_OBJECTS_64);
+		HEADER_OBJECTS_64.put(Config.CONSOLE_HEADER, CONSOLE_OBJECTS_64);
+		HEADER_OBJECTS_64.put(Config.JNI_GUI_HEADER, JNI_GUI_OBJECTS_64);
+		HEADER_OBJECTS_64.put(Config.JNI_CONSOLE_HEADER, JNI_CONSOLE_OBJECTS_64);
 	}
 
-	public static List<String> getHeaderObjects(int headerTypeIndex) {
-		if (headerTypeIndex < 0 || headerTypeIndex > 3) {
-			throw new IllegalArgumentException("headerTypeIndex is out of range: " + headerTypeIndex);
-		}
+	private LdDefaults() {
+	}
 
-		return HEADER_OBJECTS.get(headerTypeIndex);
+	public static List<String> getHeaderObjects(String headerType, String runtimeBits) {
+		if (Jre.RUNTIME_BITS_64.equals(runtimeBits)) {
+			return HEADER_OBJECTS_64.get(headerType);
+		} else if (Jre.RUNTIME_BITS_32.equals(runtimeBits)) {
+			return HEADER_OBJECTS_32.get(headerType);
+		}
+		throw new IllegalArgumentException("Unknown runtimeBits: " + runtimeBits);
 	}
 	
-	public static List<String> getLibs(String headerType) {
-		if (Config.GUI_HEADER.equals(headerType)
-				|| Config.CONSOLE_HEADER.equals(headerType)) {
-			return LIBS;
+	public static List<String> getLibs(String headerType, String runtimeBits) {
+		boolean gui = Config.GUI_HEADER.equals(headerType)
+				|| Config.CONSOLE_HEADER.equals(headerType);
+		boolean jni = Config.JNI_GUI_HEADER.equals(headerType)
+				|| Config.JNI_CONSOLE_HEADER.equals(headerType);
+		if (Jre.RUNTIME_BITS_64.equals(runtimeBits)) {
+			if (gui) {
+				return LIBS_64;
+			}
+			if (jni) {
+				return JNI_LIBS_64;
+			}
+			throw new IllegalArgumentException("Unknown headerType: " + headerType);
+		} else if (Jre.RUNTIME_BITS_32.equals(runtimeBits)) {
+			if (gui) {
+				return LIBS_32;
+			}
+			if (jni) {
+				return JNI_LIBS_32;
+			}
+			throw new IllegalArgumentException("Unknown headerType: " + headerType);
 		}
-		if (Config.JNI_GUI_HEADER.equals(headerType)
-				|| Config.JNI_CONSOLE_HEADER.equals(headerType)) {
-			return JNI_LIBS;
-		}
-		
-		throw new IllegalArgumentException("Unknown headerType: " + headerType);
+		throw new IllegalArgumentException("Unknown runtimeBits: " + runtimeBits);
 	}
 }

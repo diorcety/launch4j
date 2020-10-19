@@ -40,10 +40,10 @@
 		</copy>
 	</target>
 
-	<target name="binutils-linux">
+	<target name="binutils-linux-x86">
 		<antcall target="clean-binutils" />
 		<copy todir="${bin}">
-			<fileset dir="${bin}/bin-linux">
+			<fileset dir="${bin}/bin-linux32">
 				<include name="*" />
 			</fileset>
 		</copy>
@@ -84,6 +84,15 @@
 			</fileset>
 		</copy>
 	</target>
+
+	<target name="binutils-win64">
+		<antcall target="clean-binutils" />
+		<copy todir="${bin}">
+			<fileset dir="${bin}/bin-win64">
+				<include name="*" />
+			</fileset>
+		</copy>
+	</target>
 	
 	<target name="remove-sign4j">
 		<delete file="sign4j/sign4j.exe" />
@@ -107,15 +116,15 @@
 		</jar>
 	</target>
 
-	<target name="demo" depends="jar, binutils-linux" description="build the demos">
+	<target name="demo" depends="jar, binutils-linux-x86" description="build the demos">
 		<ant dir="./demo/ConsoleApp" inheritAll="false" />
 		<ant dir="./demo/SimpleApp" inheritAll="false" />
 	</target>
 
-	<target name="dist.linux" depends="remove-sign4j, jar, webdocs" description="generate the Linux distribution">
-		<antcall target="binutils-linux" />
+	<target name="dist.linux-x86" depends="remove-sign4j, jar, webdocs" description="generate the Linux distribution">
+		<antcall target="binutils-linux-x86" />
 		<exec executable="tar" failonerror="true">
-			<arg line="-czC .. --exclude build --exclude bin/bin* --exclude CVS --exclude .cvsignore --exclude *.bat --exclude *.exe --exclude launch4j/l4j --exclude build-private.xml --owner=0 --group=0 -f ${dist}/${ant.project.name}-${version}-linux.tgz ./launch4j" />
+			<arg line="-czC .. --exclude build --exclude bin/bin* --exclude CVS --exclude .cvsignore --exclude *.bat --exclude *.exe --exclude launch4j/l4j --exclude build-private.xml --owner=0 --group=0 -f ${dist}/${ant.project.name}-${version}-linux-x86.tgz ./launch4j" />
 		</exec>
 	</target>
 
@@ -132,13 +141,23 @@
 			<arg line="-czC .. --exclude build --exclude bin/bin* --exclude CVS --exclude .cvsignore --exclude *.bat --exclude *.exe --exclude launch4j/l4j --exclude build-private.xml --owner=0 --group=0 -f ${dist}/${ant.project.name}-${version}-macosx-x86.tgz ./launch4j" />
 		</exec>
 	</target>
-	
-	<target name="dist.win32" depends="jar, webdocs, binutils-linux" description="generate the Windows distribution">
+
+	<target name="dist.win32" depends="jar, webdocs, binutils-linux-x86" description="generate the Windows distribution">
 		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${build}:./lib/xstream.jar" />
-		<launch4j configFile="./l4j/launch4j.xml" fileVersion="${versionNumber}" txtFileVersion="${version}" productVersion="${versionNumber}" txtProductVersion="${version}" />
-		<launch4j configFile="./l4j/launch4jc.xml" fileVersion="${versionNumber}" txtFileVersion="${version}" productVersion="${versionNumber}" txtProductVersion="${version}" />
+		<launch4j configFile="./l4j/launch4j32.xml" fileVersion="${versionNumber}" txtFileVersion="${version}" productVersion="${versionNumber}" txtProductVersion="${version}" />
+		<launch4j configFile="./l4j/launch4jc32.xml" fileVersion="${versionNumber}" txtFileVersion="${version}" productVersion="${versionNumber}" txtProductVersion="${version}" />
 		<antcall target="binutils-win32" />
 		<zip destfile="${dist}/${ant.project.name}-${version}-win32.zip">
+			<zipfileset dir="." prefix="launch4j" excludes="**/build/** **/CVS/** bin/bin*/** l4j/** build-private.xml launch4j" />
+		</zip>
+	</target>
+
+	<target name="dist.win64" depends="jar, webdocs, binutils-linux-x86" description="generate the Windows distribution">
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${build}:./lib/xstream.jar" />
+		<launch4j configFile="./l4j/launch4j64.xml" fileVersion="${versionNumber}" txtFileVersion="${version}" productVersion="${versionNumber}" txtProductVersion="${version}" />
+		<launch4j configFile="./l4j/launch4jc64.xml" fileVersion="${versionNumber}" txtFileVersion="${version}" productVersion="${versionNumber}" txtProductVersion="${version}" />
+		<antcall target="binutils-win64" />
+		<zip destfile="${dist}/${ant.project.name}-${version}-win64.zip">
 			<zipfileset dir="." prefix="launch4j" excludes="**/build/** **/CVS/** bin/bin*/** l4j/** build-private.xml launch4j" />
 		</zip>
 	</target>
@@ -170,7 +189,7 @@
 		</copy>
 	</target>
 
-	<target name="dist" depends="demo, webdocs, dist.win32, dist.macosx-x86, dist.linux, dist.linux-x64, clean"
+	<target name="dist" depends="webdocs, dist.win32, dist.win64, dist.macosx-x86, dist.linux-x86, dist.linux-x64, clean"
 		description="generate all distributions" />
 
 	<target name="clean-binutils">

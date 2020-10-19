@@ -30,23 +30,27 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <assembly>
-	<id>workdir-linux</id>
+	<id>workdir-win64</id>
 	<formats>
 		<format>jar</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>bin/bin-linux</directory>
-			<outputDirectory>${finalName}-workdir-linux/bin</outputDirectory>
+			<directory>bin/bin-win64</directory>
+			<outputDirectory>${finalName}-workdir-win64/bin</outputDirectory>
 		</fileSet>
-		<fileSet>			
-			<outputDirectory>${finalName}-workdir-linux</outputDirectory>
+		<fileSet>
+			<outputDirectory>${finalName}-workdir-win64</outputDirectory>
 			<includes>
 				<include>w32api/**/*</include>
 				<include>w32api_jni/**/*</include>
-				<include>head/**/*</include>
-				<include>head_jni_BETA/**/*</include>
+				<include>head32/**/*</include>
+				<include>head32_jni_BETA/**/*</include>
+				<include>w64api/**/*</include>
+				<include>w64api_jni/**/*</include>
+				<include>head64/**/*</include>
+				<include>head64_jni_BETA/**/*</include>
 			</includes>
 		</fileSet>
 	</fileSets>

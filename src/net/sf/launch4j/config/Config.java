@@ -167,10 +167,11 @@ public class Config implements IValidatable {
 			Validator.checkIn(getPriority(), new String[] { "normal" }, "priority",
 					"Process priority is not supported,");
 			Validator.checkNotNull(classPath, "classpath", "classpath");
-			Validator.checkFalse(jre.getBundledJre64Bit(), "jre.bundledJre64Bit",
-					"64-bit bundled JRE not supported.");
-			Validator.checkTrue(Jre.RUNTIME_BITS_32.equals(jre.getRuntimeBits()), "jre.runtimeBits", 
-					"64-bit JRE not supported.");
+			Validator.checkFalse(jre.getBundledJreAsFallback(), "jre.bundledJre32Bit",
+					"Bundled JRE not supported.");
+			Validator.checkTrue(Jre.RUNTIME_BITS_32.equals(jre.getRuntimeBits()) ||
+							Jre.RUNTIME_BITS_64.equals(jre.getRuntimeBits()), "jre.runtimeBits",
+					"Only 64-bit or 32-bit JRE are supported.");
 		}
 	}
 	
@@ -232,23 +233,13 @@ public class Config implements IValidatable {
 		this.headerType = headerType;
 	}
 
-	/** launch4j header file index - used by GUI. */
-	public int getHeaderTypeIndex() {
-		int x = Arrays.asList(HEADER_TYPES).indexOf(getHeaderType());
-		return x != -1 ? x : 0;
-	}
-
-	public void setHeaderTypeIndex(int headerTypeIndex) {
-		headerType = HEADER_TYPES[headerTypeIndex];
-	}
-
 	public boolean isCustomHeaderObjects() {
 		return headerObjects != null && !headerObjects.isEmpty();
 	}
 
 	public List<String> getHeaderObjects() {
 		return isCustomHeaderObjects() ? headerObjects
-				: LdDefaults.getHeaderObjects(getHeaderTypeIndex());
+				: LdDefaults.getHeaderObjects(headerType, jre.getRuntimeBits());
 	}
 
 	public void setHeaderObjects(List<String> headerObjects) {
@@ -260,7 +251,7 @@ public class Config implements IValidatable {
 	}
 
 	public List<String> getLibs() {
-		return isCustomLibs() ? libs : LdDefaults.getLibs(headerType);
+		return isCustomLibs() ? libs : LdDefaults.getLibs(headerType, jre.getRuntimeBits());
 	}
 
 	public void setLibs(List<String> libs) {

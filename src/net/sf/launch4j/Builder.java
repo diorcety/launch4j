@@ -47,6 +47,7 @@ import java.util.StringTokenizer;
 import net.sf.launch4j.binding.InvariantViolationException;
 import net.sf.launch4j.config.Config;
 import net.sf.launch4j.config.ConfigPersister;
+import net.sf.launch4j.config.Jre;
 
 /**
  * @author Copyright (C) 2005 Grzegorz Kowal
@@ -92,17 +93,32 @@ public class Builder {
 
 			Cmd resCmd = new Cmd(_basedir);
 			resCmd.addExe("windres")
-					.add(Util.WINDOWS_OS ? "--preprocessor=type" : "--preprocessor=cat")
-					.add("-J rc -O coff -F pe-i386")
+					.add(Util.WINDOWS_OS ? "--preprocessor=type" : "--preprocessor=cat");
+			if (Jre.RUNTIME_BITS_64.equals(c.getJre().getRuntimeBits())) {
+				resCmd = resCmd
+						.add("-J rc -O coff -F pe-x86-64");
+			} else {
+				resCmd = resCmd
+						.add("-J rc -O coff -F pe-i386");
+			}
+			resCmd = resCmd
 					.addAbsFile(rc)
 					.addAbsFile(ro);
 			_log.append(Messages.getString("Builder.compiling.resources"));
 			resCmd.exec(_log);
 
 			Cmd ldCmd = new Cmd(_basedir);
-			ldCmd.addExe("ld")
-					.add("-mi386pe")
-					.add("--oformat pei-i386")
+			ldCmd = ldCmd.addExe("ld");
+			if (Jre.RUNTIME_BITS_64.equals(c.getJre().getRuntimeBits())) {
+				ldCmd = ldCmd
+						.add("-mi386pep")
+						.add("--oformat pei-x86-64");
+			} else {
+				ldCmd = ldCmd
+						.add("-mi386pe")
+						.add("--oformat pei-i386");
+			}
+			ldCmd = ldCmd
 					.add("--dynamicbase")
 					.add("--nxcompat")
 					.add("--no-seh")

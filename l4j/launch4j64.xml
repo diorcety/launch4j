@@ -9,6 +9,7 @@
   <jre>
     <minVersion>1.6.0</minVersion>
     <maxVersion>1.8.9</maxVersion>
+    <runtimeBits>64</runtimeBits>
   </jre>
   <versionInfo>
     <fileDescription>Cross-platform Java application wrapper</fileDescription>

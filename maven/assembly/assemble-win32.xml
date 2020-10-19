@@ -45,8 +45,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<includes>
 				<include>w32api/**/*</include>
 				<include>w32api_jni/**/*</include>
-				<include>head/**/*</include>
-				<include>head_jni_BETA/**/*</include>
+				<include>head32/**/*</include>
+				<include>head32_jni_BETA/**/*</include>
+				<include>w64api/**/*</include>
+				<include>w64api_jni/**/*</include>
+				<include>head64/**/*</include>
+				<include>head64_jni_BETA/**/*</include>
 			</includes>
 		</fileSet>
 	</fileSets>
